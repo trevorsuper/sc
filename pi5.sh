@@ -13,3 +13,11 @@ wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.g
 echo 'deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg] https://download.vscodium.com/debs vscodium main' \
     | sudo tee /etc/apt/sources.list.d/vscodium.list
 sudo apt update && sudo apt install codium -y
+
+cd ~/Desktop
+cat << EOF > Brave.sh
+#!/usr/bin/sh
+brave-browser --incognito
+EOF
+sudo chmod +x Brave.sh
+cd ~/
