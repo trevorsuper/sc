@@ -26,4 +26,4 @@ curl -sSLo ~/hosts.tar.gz https://github.com/trevorsuper/sc/raw/refs/heads/maste
 cd ~/
 tar -xzf hosts.tar.gz
 cat hosts | sudo tee -a /etc/hosts > /dev/null
-rm hosts
+rm hosts hosts.tar.gz
