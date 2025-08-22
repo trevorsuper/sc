@@ -1,6 +1,5 @@
 #!/usr/bin/sh
 # Raspberry Pi 5 setup script for 64-bit Desktop
-# Create config file
 
 # Configure DNS servers for current active network
 nmcli connection modify "$(nmcli --terse --field NAME connection show --active | head -n1)" ipv4.dns "9.9.9.9 149.112.112.112"
@@ -20,7 +19,7 @@ sudo systemctl restart NetworkManager
 sudo apt remove firefox chromium orca thonny geany dillo lynx emacsen-common -y
 sudo apt autoremove -y
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl minisign rsync -y
+sudo apt install curl rsync -y
 
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
