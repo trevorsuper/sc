@@ -19,11 +19,18 @@ sudo systemctl restart NetworkManager
 sudo apt remove firefox chromium orca thonny dillo lynx emacsen-common -y
 sudo apt autoremove -y
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl rsync geany -y
+sudo apt install curl rsync minisign -y
 
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
 sudo apt update && sudo apt install brave-browser -y
+
+wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
+    | gpg --dearmor \
+    | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+echo 'deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg] https://download.vscodium.com/debs vscodium main' \
+    | sudo tee /etc/apt/sources.list.d/vscodium.list
+sudo apt update && sudo apt install codium -y
 
 cat << EOF > ~/Desktop/Brave.sh
 #!/usr/bin/sh
@@ -43,3 +50,10 @@ else
     echo "hosts.tar.gz checksum is not valid"
     rm hosts.tar.gz
 fi
+
+# Make sudo require a password
+sudo rm /etc/sudoers.d/010_pi-nopasswd
+
+cat << EOF | sudo tee /etc/sudoers.d/010_pi-passwd > /dev/null
+trevor ALL=(ALL) ALL
+EOF

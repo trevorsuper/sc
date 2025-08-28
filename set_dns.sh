@@ -9,3 +9,5 @@ cat << EOF | sudo tee /etc/NetworkManager/conf.d/90-dns-over-tls.conf > /dev/nul
 connection.dns-over-tls=2
 # 2 yes, 1 opportunistic, 0 no
 EOF
+
+sudo systemctl restart NetworkManager
