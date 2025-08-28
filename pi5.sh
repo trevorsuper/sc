@@ -7,7 +7,7 @@ nmcli connection modify "$(nmcli --terse --field NAME connection show --active |
 nmcli connection modify "$(nmcli --terse --field NAME connection show --active | head -n1)" ipv6.dns "2620:fe::fe 2620:fe::9"
 nmcli connection modify "$(nmcli --terse --field NAME connection show --active | head -n1)" ipv6.ignore-auto-dns yes
 
-# DNS Over TLS
+# Enable DNS Over TLS
 cat << EOF | sudo tee /etc/NetworkManager/conf.d/90-dns-over-tls.conf > /dev/null
 [connection]
 connection.dns-over-tls=2
@@ -16,12 +16,12 @@ EOF
 
 sudo systemctl restart NetworkManager
 
-sleep 4 # seconds
-
-sudo apt remove firefox chromium orca thonny dillo lynx emacsen-common -y
-sudo apt autoremove -y
+sleep 5 # seconds
+# Package preferences
+sudo apt remove firefox chromium orca thonny dillo lynx emacsen-common geany -y
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl rsync minisign -y
+sudo apt autoremove -y
 
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
@@ -39,7 +39,7 @@ cat << EOF > ~/Desktop/Brave.sh
 brave-browser --incognito
 EOF
 sudo chmod +x ~/Desktop/Brave.sh
-
+# DNS Blocks
 curl -sSLo ~/hosts.tar.gz https://github.com/trevorsuper/sc/raw/refs/heads/master/files/hosts.tar.gz
 cd ~/
 expected_checksum="f30ce02555f850f8f4599addc4de84a7805a423f8e0e55286e05f4ddded336b3"
@@ -55,7 +55,6 @@ fi
 
 # Make sudo require a password
 sudo rm /etc/sudoers.d/010_pi-nopasswd
-
 cat << EOF | sudo tee /etc/sudoers.d/010_pi-passwd > /dev/null
-$1 ALL=(ALL) ALL
+$(whoami) ALL=(ALL) ALL
 EOF
