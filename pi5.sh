@@ -55,5 +55,5 @@ fi
 sudo rm /etc/sudoers.d/010_pi-nopasswd
 
 cat << EOF | sudo tee /etc/sudoers.d/010_pi-passwd > /dev/null
-trevor ALL=(ALL) ALL
+$1 ALL=(ALL) ALL
 EOF
