@@ -16,6 +16,8 @@ EOF
 
 sudo systemctl restart NetworkManager
 
+sleep 4 # seconds
+
 sudo apt remove firefox chromium orca thonny dillo lynx emacsen-common -y
 sudo apt autoremove -y
 sudo apt update && sudo apt upgrade -y
