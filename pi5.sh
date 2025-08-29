@@ -76,7 +76,7 @@ curl -fsSo zig-$arch-linux-$v.tar.xz.minisig https://ziglang.org/download/$v/zig
 if [ "$(minisign -Vm zig-$arch-linux-$v.tar.xz -P RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U | awk ' NR==1 { print $1, $2, $3, $4, $5 }')" = "Signature and comment signature verified" ]; then
     echo "Signature and comment signature verified"
     tar -xf zig-$arch-linux-$v.tar.xz
-    rm zig-a$arch-linux-$v.tar.xz zig-$arch-linux-$v.tar.xz.minisig
+    rm zig-$arch-linux-$v.tar.xz zig-$arch-linux-$v.tar.xz.minisig
     echo '' >> .bashrc
     echo 'export PATH="$PATH:~/zig-'$arch'-linux-'$v'/"' >> .bashrc
     source .bashrc
