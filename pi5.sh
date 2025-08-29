@@ -49,7 +49,13 @@ if [ "$(sha256sum ~/hosts.tar.gz | awk '{ print $1 }')" = "$expected_checksum" ]
     cat hosts | sudo tee -a /etc/hosts > /dev/null
     rm hosts hosts.tar.gz
 else
+    echo ""
+    echo "==========================================================================="
+    echo ""
     echo "hosts.tar.gz checksum is not valid"
+    echo ""
+    echo "==========================================================================="
+    echo ""
     rm hosts.tar.gz
 fi
 
@@ -58,3 +64,29 @@ sudo rm /etc/sudoers.d/010_pi-nopasswd
 cat << EOF | sudo tee /etc/sudoers.d/010_pi-passwd > /dev/null
 $(whoami) ALL=(ALL) ALL
 EOF
+
+#zig install
+arch="$(lscpu | awk ' NR==1 { print $2 } ')"
+v=0.15.1
+echo "$arch"
+echo "$v"
+cd ~/
+curl -fsSo zig-$arch-linux-$v.tar.xz https://ziglang.org/download/$v/zig-$arch-linux-$v.tar.xz
+curl -fsSo zig-$arch-linux-$v.tar.xz.minisig https://ziglang.org/download/$v/zig-$arch-linux-$v.tar.xz.minisig
+if [ "$(minisign -Vm zig-$arch-linux-$v.tar.xz -P RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U | awk ' NR==1 { print $1, $2, $3, $4, $5 }')" = "Signature and comment signature verified" ]; then
+    echo "Signature and comment signature verified"
+    tar -xf zig-$arch-linux-$v.tar.xz
+    rm zig-a$arch-linux-$v.tar.xz zig-$arch-linux-$v.tar.xz.minisig
+    echo '' >> .bashrc
+    echo 'export PATH="$PATH:~/zig-'$arch'-linux-'$v'/"' >> .bashrc
+    source .bashrc
+else
+    echo ""
+    echo "==========================================================================="
+    echo ""
+    echo "Something has gone wrong with zig installation, manually install and verify"
+    echo ""
+    echo "==========================================================================="
+    echo ""
+    rm zig-$arch-linux-$v.tar.xz zig-$arch-linux-$v.tar.xz.minisig
+fi
