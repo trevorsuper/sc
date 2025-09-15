@@ -36,7 +36,7 @@ sudo apt update && sudo apt install codium -y
 
 cat << EOF > ~/Desktop/Brave.sh
 #!/usr/bin/sh
-brave-browser --incognito
+brave-browser --incognito "https://www.startpage.com"
 EOF
 sudo chmod +x ~/Desktop/Brave.sh
 # DNS Blocks
