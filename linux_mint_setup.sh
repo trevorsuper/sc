@@ -15,15 +15,15 @@ EOF
 
 sudo systemctl restart NetworkManager
 
-sleep 5 # seconds
+sleep 4 # seconds
 
 # Package Preferences
-sudo apt remove firefox chromium orca emacsen-common thunderbird thunderbird-locale-en \
+sudo apt remove firefox chromium orca thunderbird thunderbird-locale-en \
  firefox-locale-en yt-dlp hypnotix mintchat libimobiledevice-utils ifuse usbmuxd ideviceinstaller \
  blueman bluetooth bluez-cups bluez-obexd bluez -y
 sudo apt autoremove -y
 sudo apt update && sudo apt upgrade -y
-sudo apt install git curl rsync -y
+sudo apt install git curl rsync xreader -y
 
 # Brave Browser
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
