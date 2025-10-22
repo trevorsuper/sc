@@ -23,7 +23,7 @@ sudo apt remove firefox chromium orca thunderbird thunderbird-locale-en \
  blueman bluetooth bluez-cups bluez-obexd bluez -y
 sudo apt autoremove -y
 sudo apt update && sudo apt upgrade -y
-sudo apt install git curl rsync xreader xed geany -y
+sudo apt install git curl rsync xreader xed geany geany-plugin-codenav geany-plugin-scope geany-plugin-treebrowser -y
 
 cat << EOF | tee ~/.config/geany/colorschemes/abc-dark.conf > /dev/null
 #
@@ -172,4 +172,3 @@ else
     echo ""
     rm hosts.tar.gz
 fi
-
