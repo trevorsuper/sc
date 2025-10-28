@@ -20,7 +20,7 @@ sleep 5 # seconds
 # Package preferences
 sudo apt remove firefox chromium orca thonny dillo lynx emacsen-common -y
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl rsync minisign geany -y
+sudo apt install curl rsync minisign geany ecryptfs-utils -y
 sudo apt autoremove -y
 
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
