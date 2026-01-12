@@ -1,5 +1,7 @@
 #!/usr/bin/sh
-sudo apt install geany geany-plugin-codenav geany-plugin-scope geany-plugin-treebrowser -y
+sudo apt install geany geany-plugin-codenav geany-plugin-scope \
+ geany-plugin-treebrowser git curl rsync libcurl4-openssl-dev clang \
+ libfuzzer-19-dev -y
 
 mkdir -p ~/.config/geany/colorschemes
 
