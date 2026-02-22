@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 curl -sSLo ~/hosts.tar.gz https://github.com/trevorsuper/sc/raw/refs/heads/master/files/hosts.tar.gz
 cd ~/
-expected_checksum="89338245b71119f28806887c1105172701cbb343d7bc2159bafd1b90b314219b"
+expected_checksum="63b4c0050f20d7cf22be69ef3629f2cc5a8adc833675208e10f5cbae3b63f4b0"
 if [ "$(sha256sum ~/hosts.tar.gz | awk '{ print $1 }')" = "$expected_checksum" ]; then
     echo "hosts.tar.gz checksum is valid"
     tar -xzf hosts.tar.gz
