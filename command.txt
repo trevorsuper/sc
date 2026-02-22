@@ -1,0 +1,23 @@
+Commands to check laptop battery stats
+upower --enumerate
+upower -i /org/freedesktop/UPower/devices/battery_BAT0
+
+resizing a kvm virtual machine
+sudo qemu-img resize /var/lib/libvirt/images/cap.qcow2 +20G
+sudo virsh domblklist cap
+sudo qemu-img resize /var/lib/libvirt/images/cap.qcow2 +1G
+sudo qemu-img resize /var/lib/libvirt/images/cap.qcow2 -22G
+sudo qemu-img info /data/kvm/ubuntu24.04
+sudo qemu-img resize /var/lib/libvirt/images/ubuntu24.04-1.qcow2 +30G
+
+verfying veracrypt
+gpg --import https://amcrypto.jp/VeraCrypt/VeraCrypt_PGP_public_key.asc
+gpg --import VeraCrypt_PGP_public_key.asc
+gpg --show-keys VeraCrypt_PGP_public_key.asc
+gpg --verify veracrypt-1.26.24-setup.tar.bz2.sig veracrypt-1.26.24-setup.tar.bz2
+
+notify-send "Alert"
+
+mint-iso-verify linuxmint-22.2-cinnamon-64bit.iso
+
+git config --list --show-origin
