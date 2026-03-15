@@ -20,7 +20,8 @@ sleep 4 # seconds
 # Package Preferences
 sudo apt remove firefox chromium orca thunderbird thunderbird-locale-en \
  firefox-locale-en yt-dlp hypnotix mintchat libimobiledevice-utils ifuse \
- usbmuxd ideviceinstaller blueman bluetooth bluez-cups bluez-obexd bluez -y
+ usbmuxd ideviceinstaller blueman bluetooth bluez-cups bluez-obexd bluez \ 
+ openvpn -y
 sudo apt autoremove -y
 sudo apt update && sudo apt upgrade -y
 sudo apt install git curl rsync xreader xed geany geany-plugin-codenav \
