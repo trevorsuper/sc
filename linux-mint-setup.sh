@@ -1,0 +1,180 @@
+#!/usr/bin/sh
+# Linux Mint Setup Script
+# Configure DNS servers for current active network
+nmcli connection modify "$(nmcli --terse --field NAME connection show --active | head -n1)" ipv4.dns "9.9.9.9 149.112.112.112"
+nmcli connection modify "$(nmcli --terse --field NAME connection show --active | head -n1)" ipv4.ignore-auto-dns yes
+nmcli connection modify "$(nmcli --terse --field NAME connection show --active | head -n1)" ipv6.dns "2620:fe::fe 2620:fe::9"
+nmcli connection modify "$(nmcli --terse --field NAME connection show --active | head -n1)" ipv6.ignore-auto-dns yes
+
+# Enable DNS Over TLS
+cat << EOF | sudo tee /etc/NetworkManager/conf.d/90-dns-over-tls.conf > /dev/null
+[connection]
+connection.dns-over-tls=2
+# 2 yes, 1 opportunistic, 0 no
+EOF
+
+sudo systemctl restart NetworkManager
+
+sleep 4 # seconds
+
+# Package Preferences
+sudo apt remove firefox chromium orca thunderbird thunderbird-locale-en \
+ firefox-locale-en yt-dlp hypnotix mintchat libimobiledevice-utils ifuse \
+ usbmuxd ideviceinstaller blueman bluetooth bluez-cups bluez-obexd bluez \ 
+ openvpn -y
+sudo apt autoremove -y
+sudo apt update && sudo apt upgrade -y
+sudo apt install git curl rsync xreader xed geany geany-plugin-codenav \
+ geany-plugin-scope geany-plugin-treebrowser libimage-exiftool-perl \
+ pavucontrol clang meson libfuzzer-19-dev libcurl4-openssl-dev pahole \
+ webp -y
+
+mkdir -p ~/.config/geany/colorschemes
+
+cat << EOF | tee ~/.config/geany/colorschemes/abc-dark.conf > /dev/null
+#
+# Author <irvirty(at)gmail(dot)com>
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public
+# License along with this library; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+# Other:
+# GNU General Public License v2.0
+#https://github.com/geany/geany/blob/master/COPYING
+#https://github.com/geany/geany/blob/d9f8cdbad58d09f0c18ca8acccb49209263018f0/data/filedefs/filetypes.common#L2
+# Inspired by GitHub, Sublime Text, Geany
+
+[theme_info]
+name=Abc Dark
+description=Dark flat theme.
+version=4.3.1
+author=irvirty
+# list of each compatible Geany release version
+compat=1.38;2.0;
+
+[named_styles]
+
+default=#dbdbdb;#1C1C1C;false;false
+error=#e37170;#292929;false;italic
+
+# Editor styles
+#-------------------------------------------------------------------------------
+
+selection=#000000;#E7A96B;true;true
+current_line=#FFFFFF;#262626;true
+brace_good=#000000;#7FEC75;true;false
+brace_bad=#000000;#FF5656;true;false
+margin_line_number=#6E6E6E;#1C1C1C
+margin_folding=#5C5C5C;#1C1C1C
+fold_symbol_highlight=#1C1C1C
+indent_guide=#595959
+caret=#fff;#fff;false;
+marker_line=#000000;#E7A96B
+marker_search=marker_line
+marker_mark=#545454;#95BFD7
+call_tips=#939393;#262626;false;false
+white_space=#595959;#000000;true;false
+
+# Programming languages
+#-------------------------------------------------------------------------------
+
+comment=#ADADAD
+comment_doc=comment
+comment_line=comment
+comment_line_doc=comment_doc
+comment_doc_keyword=comment_doc,bold
+comment_doc_keyword_error=comment_doc,italic
+
+number=#8AD1FF
+number_1=number
+number_2=number_1
+
+type=#50AAB3;;true;false
+class=type
+function=#cc8ad4
+parameter=#23B0E6
+
+keyword=#BF6069;;true;false
+keyword_1=keyword
+keyword_2=keyword_1
+keyword_3=keyword_1
+keyword_4=keyword_1
+
+identifier=default
+identifier_1=identifier
+identifier_2=identifier_1
+identifier_3=identifier_1
+identifier_4=identifier_1
+
+string=#6BB37C
+string_1=string
+string_2=string_1
+string_3=default
+string_4=default
+string_eol=string_1;#6E006E;false;false
+character=string_1
+backticks=string_2
+here_doc=string_2
+
+label=default,bold
+preprocessor=#45BDE6
+regex=number_1
+operator=default
+decorator=string_1,bold
+other=default
+
+# Markup-type languages
+#-------------------------------------------------------------------------------
+
+tag=#80B8FF
+tag_unknown=tag,bold
+tag_end=tag,bold
+attribute=#85C6CC
+attribute_unknown=attribute,bold
+value=string_1
+entity=default
+
+# Diff
+#-------------------------------------------------------------------------------
+
+line_added=#75C075;#ffffff;false;false
+line_removed=#FF7E7E;#ffffff;false;false
+line_changed=#A46FA4;#ffffff;false;false
+EOF
+
+# Brave Browser
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
+sudo apt update && sudo apt install brave-browser -y
+
+# DNS Blocks
+curl -sSLo ~/hosts.tar.gz https://github.com/trevorsuper/sc/raw/refs/heads/master/files/hosts.tar.gz
+cd ~/
+expected_checksum="63b4c0050f20d7cf22be69ef3629f2cc5a8adc833675208e10f5cbae3b63f4b0"
+if [ "$(sha256sum ~/hosts.tar.gz | awk '{ print $1 }')" = "$expected_checksum" ]; then
+    echo "hosts.tar.gz checksum is valid"
+    tar -xzf hosts.tar.gz
+    cat hosts | sudo tee -a /etc/hosts > /dev/null
+    rm hosts hosts.tar.gz
+else
+    echo ""
+    echo "==========================================================================="
+    echo ""
+    echo "hosts.tar.gz checksum is not valid"
+    echo ""
+    echo "==========================================================================="
+    echo ""
+    rm hosts.tar.gz
+fi
