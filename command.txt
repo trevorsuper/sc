@@ -23,3 +23,6 @@ mint-iso-verify linuxmint-22.2-cinnamon-64bit.iso
 git config --list --show-origin
 
 cwebp -q 90 img.jpg -o img.webp
+
+x64 microarchitecture
+/lib64/ld-linux-x86-64.so.2 --help | grep supported
