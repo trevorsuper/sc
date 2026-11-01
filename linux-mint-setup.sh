@@ -27,7 +27,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install git curl rsync xreader xed geany geany-plugin-codenav \
  geany-plugin-scope geany-plugin-treebrowser libimage-exiftool-perl \
  pavucontrol clang lld libfuzzer-19-dev libcurl4-openssl-dev pahole \
- webp clang-format clang-tidy libc++-dev cmake konsole -y
+ webp clang-format clang-tidy cmake konsole -y
 
 mkdir -p ~/.config/geany/colorschemes
 
